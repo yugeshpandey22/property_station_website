@@ -1,0 +1,31 @@
+# URL Routing to pages/ directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /property_station_website/
+
+    # If file doesn't exist in root, check if it exists in pages/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(about|contact|gallery|projects|project|specifications)\.php$ pages/$1.php [L,QSA]
+</IfModule>
+
+# Performance & Browser Caching
+<IfModule mod_headers.c>
+    # 30-day cache for static assets (images, css, js, webp, fonts)
+    <FilesMatch "\.(ico|jpe?g|png|gif|webp|svg|css|js|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+    
+    # 1 hour cache for HTML
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "max-age=3600, private, must-revalidate"
+    </FilesMatch>
+
+    # Performance & Security
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Enable Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
